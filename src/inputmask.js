@@ -39,19 +39,15 @@
 				var edConfig = inputmask.getEditableConfig(editable.obj);
 				if (edConfig.enableFilter) {
 				//filtering is enabled, watching keystrokes
-					editable.obj.unbind('keydown'); // unbinding aloha preprocess
-					editable.obj.keydown(function(event){ // and replace by our own
-						var preprocess = Aloha.Markup.preProcessKeyStrokes(event), // grab aloha original event handling
+					//editable.obj.unbind('keydown'); // unbinding aloha preprocess
+					editable.obj.keypress(function(event){ // listen for keypress (then get the unicode char)
+						var 
 							k = event.which, char,
 							result = true;
-						if (preprocess) {
-							Aloha.Log.debug(Aloha, "Keycode :" + k);
-							char = String.fromCharCode(k);
-							if (edConfig.allowchars instanceof RegExp){
-								result = result && edConfig.allowchars.test(char);
-							}
-						} else {
-							result = false;
+						char = String.fromCharCode(k);
+						if (edConfig.allowchars instanceof RegExp){
+							Aloha.Log.debug(Aloha, "Keycode : [" + k + "] char : '" + char + "'");
+							result = result && edConfig.allowchars.test(char);
 						}
 						return result;
 					});
