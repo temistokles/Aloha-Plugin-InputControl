@@ -38,8 +38,7 @@
 			Aloha.bind('aloha-editable-created', function(event, editable){
 				var edConfig = inputmask.getEditableConfig(editable.obj);
 				if (edConfig.enableFilter) {
-				//filtering is enabled, watching keystrokes
-					//editable.obj.unbind('keydown'); // unbinding aloha preprocess
+				//filtering is enabled, watching keypress (to get the unicode charcode)
 					editable.obj.keypress(function(event){ // listen for keypress (then get the unicode char)
 						var 
 							k = event.which, char,
@@ -50,6 +49,45 @@
 							result = result && edConfig.allowchars.test(char);
 						}
 						return result;
+					});
+				}
+				if (edConfig.disableEnter) {
+					editable.obj.unbind('keydown'); // unbinding aloha preprocess
+					editable.obj.keydown(function(event) {
+						if (event.keyCode === 13) {
+							return false;
+						 }
+						return Aloha.Markup.preProcessKeyStrokes();
+					});
+				}
+				if (edConfig.enableMask) { // TODO: debug in here
+					editable.obj.blur(function (event){
+						var $this = $(this);
+						if (edConfig.type === Number) {
+							if (new Number($this.text()).toString() === "NaN") {
+//								alert("Invalid input");
+								// TODO inform user of inconsistent input
+								$this.addClass('aloha-input-invalid');
+							} else {
+								$this.removeClass('aloha-input-invalid');
+							}
+						}
+						if (typeof edConfig.maxlength === "number") {
+							if (edConfig.striphtml) {
+								if ($this.text().length >= edConfig.maxlength) {
+									$this.addClass('aloha-input-invalid');
+								} else {
+									$this.removeClass('aloha-input-invalid');
+								}
+							} else {
+								if ($this.html().length >= edConfig.maxlength) {
+									$this.addClass('aloha-input-invalid');
+								} else {
+									$this.removeClass('aloha-input-invalid');
+								}
+							}
+						}
+						return true;
 					});
 				}
 			});
