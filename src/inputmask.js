@@ -38,16 +38,22 @@
 			Aloha.bind('aloha-editable-created', function(event, editable){
 				var edConfig = inputmask.getEditableConfig(editable.obj);
 				if (edConfig.enableFilter) {
+				//filtering is enabled, watching keystrokes
 					editable.obj.unbind('keydown'); // unbinding aloha preprocess
 					editable.obj.keydown(function(event){ // and replace by our own
 						var preprocess = Aloha.Markup.preProcessKeyStrokes(event), // grab aloha original event handling
-						k = event.which, char;
+							k = event.which, char,
+							result = true;
 						if (preprocess) {
+							Aloha.Log.debug(Aloha, "Keycode :" + k);
 							char = String.fromCharCode(k);
-							return edConfig.allowchars.test(char);
+							if (edConfig.allowchars instanceof RegExp){
+								result = result && edConfig.allowchars.test(char);
+							}
 						} else {
-							return false;
+							result = false;
 						}
+						return result;
 					});
 				}
 			});
