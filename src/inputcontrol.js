@@ -16,9 +16,9 @@
 	/**
 	 * register the plugin with unique name
 	 */
-	Aloha.InputMask = new (Aloha.Plugin.extend({
+	Aloha.InputControl = new (Aloha.Plugin.extend({
 		_constructor: function(){
-			this._super('inputmask');
+			this._super('inputcontrol');
 		},
 		/**
 		 * Initialize the plugin and set initialize flag on true
