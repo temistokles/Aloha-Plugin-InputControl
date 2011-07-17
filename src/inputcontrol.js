@@ -1,7 +1,8 @@
 /*!
 * Aloha Editor
-* Author & Copyright (c) 2010 Gentics Software GmbH
+* Copyright (c) 2010 Gentics Software GmbH
 * aloha-sales@gentics.com
+* Author Nicolas Karageuzian
 * Licensed unter the terms of http://www.aloha-editor.com/license.html
 */
 
