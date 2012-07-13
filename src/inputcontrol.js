@@ -6,18 +6,15 @@
 * Licensed unter the terms of http://www.aloha-editor.com/license.html
 */
 
-// Start Closure
-(function(window, undefined) {
+define(
+['aloha/plugin', 'aloha'],
+function (plugin, Aloha) {
 	"use strict";
-	var
-		jQuery = window.alohaQuery, $ = jQuery,
-		GENTICS = window.GENTICS,
-		Aloha = window.Aloha;
 
 	/**
 	 * register the plugin with unique name
 	 */
-	Aloha.InputControl = new (Aloha.Plugin.extend({
+	return plugin.create('inputcontrol', {
 		_constructor: function(){
 			this._super('inputcontrol');
 		},
@@ -26,7 +23,6 @@
 		 */
 		init: function () {	
 			var inputmask = this;
-			
 			inputmask.bindEvents();
 		},
 		
@@ -42,12 +38,12 @@
 				//filtering is enabled, watching keypress (to get the unicode charcode)
 					editable.obj.keypress(function(event){ // listen for keypress (then get the unicode char)
 						var 
-							k = event.which, char,
+							k = event.which, chr,
 							result = true;
-						char = String.fromCharCode(k);
+						chr = String.fromCharCode(k);
 						if (edConfig.allowchars instanceof RegExp){
-							Aloha.Log.debug(Aloha, "Keycode : [" + k + "] char : '" + char + "'");
-							result = result && edConfig.allowchars.test(char);
+							Aloha.Log.debug(Aloha, "Keycode : [" + k + "] char : '" + chr + "'");
+							result = result && edConfig.allowchars.test(chr);
 						}
 						return result;
 					});
@@ -66,8 +62,6 @@
 						var $this = $(this);
 						if (edConfig.type === Number) {
 							if (new Number($this.text()).toString() === "NaN") {
-//								alert("Invalid input");
-								// TODO inform user of inconsistent input
 								$this.addClass('aloha-input-invalid');
 							} else {
 								$this.removeClass('aloha-input-invalid');
@@ -94,5 +88,5 @@
 			});
 		}
 	
-	}))();
-})(window);
+	});
+});
