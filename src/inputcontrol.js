@@ -54,7 +54,7 @@ function (plugin, Aloha) {
 						if (event.keyCode === 13) {
 							return false;
 						 }
-						return Aloha.Markup.preProcessKeyStrokes();
+						return Aloha.Markup.preProcessKeyStrokes(event);
 					});
 				}
 				if (edConfig.enableMask) { // TODO: debug in here
